@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container" style="overflow-x: auto">
+        <h2>{{ title }}</h2>
+
+        <a href="{{ url_for("account.create") }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add new</a>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Phone number</th>
+                <th>Password</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for account in accounts |reverse %}
+                <tr>
+                    <td>{{ loop.index0 + 1 }}</td>
+                    <td>{{ account.phone }}</td>
+                    <td>{{ account.password }}</td>
+                    <td>{{ account.get_status() }}</td>
+
+                    <td class="btn-group btn-group-sm">
+                        <a href="{{ url_for('account.edit',_id=account.id) }}" class="btn btn-info"><i
+                                class="fa fa-pencil"></i> Edit</a>
+                        <a href="{{ url_for('account.delete',_id=account.id) }}" class="btn btn-danger"><i
+                                class="fa fa-remove"></i> Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

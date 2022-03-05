@@ -1,128 +1,29 @@
-{%extends "barside.html"%}
-{%block content%}
+{% extends "base.html" %}
+{% block content %}
+    <h1 >Class rooms</h1>
+    <a class="btn btn-success pull-right" href="{{ url_for('class_room.create') }}" style="margin-bottom: 20px"><i class="fa fa-plus"></i> Add new class room</a>
 
-<table class="table table-bordered">
-    <div class="row">
-        <div class="col md-12">
-            <div class="jumbotron p-3">
-                <h2>Manage <b>Classroom </b> <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add New Classrooms</button></h2>
-
-                {%with messages = get_flashed_messages()%}
-
-                {%if messages%}
-                
-                {%for message in messages%}
-                
-                <div class="alert alert-success alert-dismissible" role="alert">
-
-                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                        <span aria-hidden="true">x</span>
-                    </button>
-
-                    {{message}}
-                    
-                </div>
-                
-                {%endfor%}
-                
-                {%endif%}
-                
-                {%endwith%}
-            </div>
-            <thead>
-                <tr>
-                    <th>UID</th>
-                    <th>Capacity</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="myTable">
-                {%for classroom in classrooms%}
-                    <tr>
-                        <td>{{classroom.uid}}</td>
-                        <td>{{classroom.capacity}}</td>
-                        <td>
-                            <a href="/lop_hoc/update/{{classroom.id}}" class="btn btn-outline-warning btn-xs" data-toggle="modal" data-target="#modaledit{{classroom.id}}">Edit</a>
-                            <a href="/lop_hoc/delete/{{classroom.id}}" class="btn btn-outline-danger btn-xs">Delete</a>
-        
-                        </td>
-                    </tr>
-
-
-                <div id="modaledit{{classroom.id}}" class="modal fade" role="dialog">
-
-                    <div class="modal-dialog">
-                        
-                        <div class="modal-content">
-                            
-                            <div class="modal-header">
-                
-                                <h4 class="modal-title">Update Information</h4>
-                            </div>
-                            <div class="modal-body">
-                
-                                <form action="/lop_hoc/update" method="POST">
-                                    <div class="form-group">
-                                        <label>Capacity:</label>
-                                        <input type="hidden" name="id" value="{{classroom.id}}">
-
-                                        <input type="text" class="form-control" name="capacity" value="{{classroom.capacity}}">
-                                    </div>
-                
-                                    <div class="form-group">
-                                        <button class="btn btn-success" type="submit">Update</button>
-                                        
-                                    </div>
-                
-                                </form>
-                
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {%endfor%}
-            </tbody>
-
-
-            <div id="mymodal" class="modal fade" role="dialog">
-
-                <div class="modal-dialog">
-                    
-                    <div class="modal-content">
-                        
-                        <div class="modal-header">
-
-                            <h4 class="modal-title">Add Classroom</h4>
-                        </div>
-                        <div class="modal-body">
-
-                            <form action="/lop_hoc/insert" method="POST">
-                                <div class="form-group">
-                                    <label>Capacity:</label>
-                                    <input type="text" class="form-control" name="capacity" required="1">
-                                </div>
-
-                                <div class="form-group">
-                                    <button class="btn btn-success" type="submit">Add classroom</button>
-                                    
-                                </div>
-
-                            </form>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</table>
-
-
-{%endblock%}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>UID</th>
+            <th>Capacity</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for class_room in class_rooms %}
+            <tr>
+                <td>{{ class_room.uid }}</td>
+                <td>{{ class_room.capacity }}</td>
+                <td>
+                    <a href="{{ url_for('class_room.edit',_id=class_room.id) }}"
+                       class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="{{ url_for('class_room.delete',_id=class_room.id) }}"
+                       class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
