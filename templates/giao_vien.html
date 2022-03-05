@@ -1,0 +1,152 @@
+{%extends "barside.html"%}
+{%block content%}
+
+<table class="table table-bordered">
+    <div class="row">
+        <div class="col md-12">
+            <div class="jumbotron p-3">
+                <h2>Manage <b>Teacher </b> <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add New Teachers</button></h2>
+
+                {%with messages = get_flashed_messages()%}
+
+                {%if messages%}
+                
+                {%for message in messages%}
+                
+                <div class="alert alert-success alert-dismissible" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+
+                    {{message}}
+                    
+                </div>
+                
+                {%endfor%}
+                
+                {%endif%}
+                
+                {%endwith%}
+            </div>
+            <thead>
+                <tr>
+                    <th>UID</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Subject Taught</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                {%for teacher in teachers%}
+                    <tr>
+                        <td>{{teacher.uid}}</td>
+                        <td>{{teacher.first_name}}</td>
+                        <td>{{teacher.last_name}}</td>
+                        <td>{{teacher.subject_taught}}</td>
+                        <td>
+                            <a href="/giao_vien/update/{{teacher.id}}" class="btn btn-outline-warning btn-xs" data-toggle="modal" data-target="#modaledit{{teacher.id}}">Edit</a>
+                            <a href="/giao_vien/delete/{{teacher.id}}" class="btn btn-outline-danger btn-xs">Delete</a>
+        
+                        </td>
+                    </tr>
+
+
+                <div id="modaledit{{teacher.id}}" class="modal fade" role="dialog">
+
+                    <div class="modal-dialog">
+                        
+                        <div class="modal-content">
+                            
+                            <div class="modal-header">
+                
+                                <h4 class="modal-title">Update Information</h4>
+                            </div>
+                            <div class="modal-body">
+                
+                                <form action="/giao_vien/update" method="POST">
+                                    <div class="form-group">
+                                        <label>First name:</label>
+                                        <input type="hidden" name="id" value="{{teacher.id}}">
+
+                                        <input type="text" class="form-control" name="first_name" value="{{teacher.first_name}}">
+                                    </div>
+                
+                                    <div class="form-group">
+                                        <label>Last name:</label>
+                                        <input type="text" class="form-control" name="last_name" value="{{teacher.last_name}}">
+                                    </div>
+                
+                                    <div class="form-group">
+                                        <label>Subject taught:</label>
+                                        <input type="datetime" class="form-control" name="subject_taught" value="{{teacher.date_of_birth}}">
+                                    </div>
+                
+                                    <div class="form-group">
+                                        <button class="btn btn-success" type="submit">Update</button>
+                                        
+                                    </div>
+                
+                                </form>
+                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </tbody>
+
+
+            <div id="mymodal" class="modal fade" role="dialog">
+
+                <div class="modal-dialog">
+                    
+                    <div class="modal-content">
+                        
+                        <div class="modal-header">
+
+                            <h4 class="modal-title">Add Teacher</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form action="/giao_vien/insert" method="POST">
+                                <div class="form-group">
+                                    <label>First name:</label>
+                                    <input type="text" class="form-control" name="first_name" required="1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Last name:</label>
+                                    <input type="text" class="form-control" name="last_name" required="1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Subject taught:</label>
+                                    <input type="datetime" class="form-control" name="subject_taught" required="1">
+                                </div>
+
+                                <div class="form-group">
+                                    <button class="btn btn-success" type="submit">Add teacher</button>
+                                    
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</table>
+
+
+{%endblock%}
